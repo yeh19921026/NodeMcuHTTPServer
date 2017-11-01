@@ -1,0 +1,1 @@
+nodemcu-uploader -p com3 %*
