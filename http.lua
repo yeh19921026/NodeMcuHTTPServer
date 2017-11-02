@@ -1,15 +1,20 @@
+function showlog(s)
+    print(s)
+end
+--create http server
 local function httpserver()
     local sv = net.createServer(net.TCP, 30)
     print("Server created...")
     local send
     local fd
     local function senddata(sc)
-        local str = fd:read(1460)
-        sc:unhold()
+        local str = fd:read()
+        --sc:unhold()
         if str then
+            --sc:hold()
+            --print(str)
+            print("read size is " .. str:len())
             sc:send(str, senddata)
-            sc:hold()
-            print(str)
         else
             fd:close()
             fd = nil
@@ -17,7 +22,7 @@ local function httpserver()
         end
     end
     local function receiver(sck, data)
-        print(data)
+        dofile("httpRequest.lua")(data)
         fd = file.open("httpserverfile/main.html", "r")
         senddata(sck, fd)
     end
